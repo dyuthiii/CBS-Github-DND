@@ -15,7 +15,7 @@ from sklearn.decomposition import PCA
 
 
 
-df= pd.read_csv("IV DV binary one row per student.csv")
+df= pd.read_csv("data io/IV DV binary one row per student.csv")
 #print(list(df.columns))
 course_Y = df.drop(['PID', 'UNI', 'Grad_Class_Of', 'billing_program_school', 
                  'Program', 'Program Type',  
@@ -67,5 +67,5 @@ df['job_cluster'] = kmeans.fit_predict(job_X_encoded)
  # example for cluster 0
 
 cluster_course = df.drop(columns=course_Y.columns)
-#cluster_course.to_csv("one row per student, course list with cluster (predictors jf,ji).csv")
+#cluster_course.to_csv("data io/one row per student, course list with cluster (predictors jf,ji).csv")
 
