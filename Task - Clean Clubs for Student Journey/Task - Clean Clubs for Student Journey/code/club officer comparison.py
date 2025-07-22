@@ -10,9 +10,9 @@ which officer positions exist in one file but not the other?
 import pandas as pd
 import datetime as dt
 
-athena_dta = pd.read_excel('Z:/Individual Folders/Dyuthi Dinesh (dnd2129)/Task - Clean Clubs for Student Journey/Task - Clean Clubs for Student Journey/Export Student Activity - from Athena BU only.xlsx',
+athena_dta = pd.read_excel('C:/Users/dnd2129/Documents/CBS-Github-DND/Task - Clean Clubs for Student Journey/Task - Clean Clubs for Student Journey/data io/Export Student Activity - from Athena BU only.xlsx',
                          sheet_name='Sheet1', header=2)
-campusgroups_dta = pd.read_excel("Z:/Individual Folders/Dyuthi Dinesh (dnd2129)/Task - Clean Clubs for Student Journey/Task - Clean Clubs for Student Journey/CampusGroups Clubs.xlsx")
+campusgroups_dta = pd.read_excel("C:/Users/dnd2129/Documents/CBS-Github-DND/Task - Clean Clubs for Student Journey/Task - Clean Clubs for Student Journey/data io/CampusGroups Clubs.xlsx")
 
 
 
@@ -51,7 +51,7 @@ campusgroups_filtd['club_name'] = (
     .str.lower()                 # convert to lowercase
 )
 
-std_map = pd.read_excel('club_map.xlsx', 'combined')
+std_map = pd.read_excel('C:/Users/dnd2129/Documents/CBS-Github-DND/Task - Clean Clubs for Student Journey/Task - Clean Clubs for Student Journey/data io/club_map.xlsx', 'combined')
 
 athena_filtd = pd.merge(athena_filtd, std_map, on="club_name", how='left')
 campusgroups_filtd = pd.merge(campusgroups_filtd, std_map, on="club_name", how='left')
@@ -143,11 +143,20 @@ only_in_athena = merged[merged['_merge'] == 'left_only']
 only_in_campusgroups = merged[merged['_merge'] == 'right_only']
 in_both = merged[merged['_merge'] == 'both']
 
-with pd.ExcelWriter('club_officer_exclusive updated 15 july.xlsx') as writer:
+with pd.ExcelWriter('C:/Users/dnd2129/Documents/CBS-Github-DND/Task - Clean Clubs for Student Journey/Task - Clean Clubs for Student Journey/data io/club_officer_exclusive updated 22 july.xlsx') as writer:
     only_in_athena.to_excel(writer, sheet_name='only_in_athena', index=False)
     only_in_campusgroups.to_excel(writer, sheet_name='only_in_campusgroups', index=False)
     in_both.to_excel(writer, sheet_name='in_both', index=False)
 
+
+'''
+22 July
+only in athena(only BU)= 76534
+only in campusgroups = 77773
+in_both= 5130
+
+
+'''
 '''
 july 15: No 2019 filter, updated club map, updated officer flag for campusgroup.
 only in athena(only BU)= 76565

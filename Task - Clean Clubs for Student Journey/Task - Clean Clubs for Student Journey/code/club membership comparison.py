@@ -7,9 +7,9 @@ Created on Mon Jul  7 16:00:33 2025
 import pandas as pd
 import datetime as dt
 
-athena_dta = pd.read_excel('Z:/Individual Folders/Dyuthi Dinesh (dnd2129)/Task - Clean Clubs for Student Journey/Task - Clean Clubs for Student Journey/Export Student Activity - from Athena BU only.xlsx',
+athena_dta = pd.read_excel('data io/Export Student Activity - from Athena BU only.xlsx',
                          sheet_name='Sheet1', header=2)
-campusgroups_dta = pd.read_excel("Z:/Individual Folders/Dyuthi Dinesh (dnd2129)/Task - Clean Clubs for Student Journey/Task - Clean Clubs for Student Journey/CampusGroups Clubs.xlsx")
+campusgroups_dta = pd.read_excel("data io/CampusGroups Clubs.xlsx")
 
 #how many blank start dates are there for Athena?
 
@@ -74,7 +74,7 @@ campusgroups_clubs_df = campusgroups_filtd['club_name'].value_counts().reset_ind
 campusgroups_clubs_df.columns = ['club_name', 'count']
 
 # Write to Excel with two sheets
-# with pd.ExcelWriter('club_map.xlsx') as writer:
+# with pd.ExcelWriter('data io/initial club_map.xlsx') as writer:
 #     athena_clubs_df.to_excel(writer, sheet_name='athena clubs', index=False)
 #     campusgroups_clubs_df.to_excel(writer, sheet_name='campusgroup clubs', index=False)
 
@@ -84,7 +84,7 @@ campusgroups_clubs_df.columns = ['club_name', 'count']
 
 #Manually make 'combined' subsheet
 
-std_map = pd.read_excel('club_map.xlsx', 'combined')
+std_map = pd.read_excel('data io/club_map.xlsx', 'combined')
 
 athena_filtd = pd.merge(athena_filtd, std_map, on="club_name", how='left')
 campusgroups_filtd = pd.merge(campusgroups_filtd, std_map, on="club_name", how='left')
@@ -131,11 +131,19 @@ only_in_campusgroups = merged[merged['_merge'] == 'right_only']
 in_both = merged[merged['_merge'] == 'both']
 
 # Write to Excel with three sheets
-with pd.ExcelWriter('club_membership_exclusive 15 july updated club.xlsx') as writer:
+with pd.ExcelWriter('data io/club_membership_exclusive 22 july updated club.xlsx') as writer:
     only_in_athena.to_excel(writer, sheet_name='only_in_athena', index=False)
     only_in_campusgroups.to_excel(writer, sheet_name='only_in_campusgroups', index=False)
     in_both.to_excel(writer, sheet_name='in_both', index=False)
     
+    
+    
+    '''
+    22 july:
+    only_in_athena = 130048
+    only_in_campusgroups= 78549
+    in_both = 5207
+    '''
 '''
 without 2019 filter & updated 15 july club mapping
 only_in_athena = 130079

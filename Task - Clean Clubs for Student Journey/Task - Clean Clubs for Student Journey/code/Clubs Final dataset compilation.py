@@ -30,8 +30,22 @@ merged['final_aggregated_officer_position'] = merged.apply(
     axis=1
 )
 
-merged.to_csv("final club dataset merged 15 july.csv")
+merged.to_csv("C:/Users/dnd2129/Documents/CBS-Github-DND/Task - Clean Clubs for Student Journey/Task - Clean Clubs for Student Journey/data io/final club dataset merged 22 july.csv")
+'''
+22 july
+159437 values
+only in athena(only BU)= 76534
+only in campusgroups = 77773
+in_both= 5130
 
+
+'''
+'''
+july 15: No 2019 filter, updated club map, updated officer flag for campusgroup.
+only in athena(only BU)= 76565
+only in campusgroups = 77803
+in_both= 5100
+'''
 '''
 159299 values
 76396 from only in athena,
