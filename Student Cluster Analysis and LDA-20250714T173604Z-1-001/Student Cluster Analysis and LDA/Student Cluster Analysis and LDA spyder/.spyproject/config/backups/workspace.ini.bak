@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['code\\NLP on course names.py', 'code\\merging indiv datasets.py', 'code\\KMeans Clustering.py']
+recent_files = ['code\\new data combined course names.py', 'code\\merging indiv datasets.py', 'code\\KMeans Clustering.py', 'code\\EDA.py', 'code\\data wrangling.py']
 
 [main]
 version = 0.2.0
