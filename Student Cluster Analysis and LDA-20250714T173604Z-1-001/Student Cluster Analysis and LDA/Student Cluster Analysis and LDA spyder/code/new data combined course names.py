@@ -20,3 +20,4 @@ df['combined_name'] = np.where(
     df['SIS Class Name']
 )
 
+df.to_excel("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/raw data/Project - Student Course Clustering/Student Course Elective Enrollments Graduates 2016-2025.xlsx")

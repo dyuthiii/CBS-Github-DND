@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['EDA.py', 'EDA through merges.py', 'utils.py', 'KMeans Clustering.py', 'course correlations,heatmap and one row per student.py', 'data wrangling.py', 'LCA via LatentDirichletAllocation.py']
+recent_files = ['code\\NLP on course names.py', 'code\\merging indiv datasets.py', 'code\\KMeans Clustering.py']
 
 [main]
 version = 0.2.0

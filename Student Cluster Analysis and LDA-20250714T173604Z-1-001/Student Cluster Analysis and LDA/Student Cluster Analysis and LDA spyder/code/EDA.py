@@ -20,7 +20,7 @@ import re
 from utils import *
 
 
-df = pd.read_csv('data io/Course Data Merged.csv')
+df = pd.read_excel("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/raw data/Project - Student Course Clustering/Student Course Elective Enrollments Graduates 2016-2025.xlsx")
 
 #descriptives and initial checks
 df_head = df.head()          # First 5 rows
@@ -37,35 +37,35 @@ col_counts = cat_counts(df)
 #Grouped by vars
 # Group by gender, race, and elective, then count
 grouped_gender = df.groupby(['Combined Gender', 
-                             'Class_Name (SIS)', 
+                             'combined_name', 
                              'Course_Identifier']).size().reset_index(name='count')
-top_gender_electives = grouped_gender.sort_values('count', ascending=False).drop_duplicates(subset=['Combined Gender', 'Class_Name (SIS)', 'Course_Identifier'])
+top_gender_electives = grouped_gender.sort_values('count', ascending=False).drop_duplicates(subset=['Combined Gender', 'combined_name', 'Course_Identifier'])
 
 
 #Combined Federal Race
 grouped_race = df.groupby(['Combined Federal Race', 
-                             'Class_Name (SIS)', 
+                             'combined_name', 
                              'Course_Identifier']).size().reset_index(name='count')
-top_race_electives = grouped_race.sort_values('count', ascending=False).drop_duplicates(subset=['Combined Federal Race', 'Class_Name (SIS)', 'Course_Identifier'])
+top_race_electives = grouped_race.sort_values('count', ascending=False).drop_duplicates(subset=['Combined Federal Race', 'combined_name', 'Course_Identifier'])
 
 
 #SIS Citizenship
 grouped_citizen = df.groupby(['SIS Citizenship', 
-                             'Class_Name (SIS)', 
+                             'combined_name', 
                              'Course_Identifier']).size().reset_index(name='count')
-top_citizen_electives = grouped_citizen.sort_values('count', ascending=False).drop_duplicates(subset=['SIS Citizenship', 'Class_Name (SIS)', 'Course_Identifier'])
+top_citizen_electives = grouped_citizen.sort_values('count', ascending=False).drop_duplicates(subset=['SIS Citizenship', 'combined_name', 'Course_Identifier'])
 
 #Future Job Industry
 grouped_job = df.groupby(['Future Job Industry', 
-                             'Class_Name (SIS)', 
+                             'combined_name', 
                              'Course_Identifier']).size().reset_index(name='count')
-top_job_electives = grouped_job.sort_values('count', ascending=False).drop_duplicates(subset=['Future Job Industry', 'Class_Name (SIS)', 'Course_Identifier'])
+top_job_electives = grouped_job.sort_values('count', ascending=False).drop_duplicates(subset=['Future Job Industry', 'combined_name', 'Course_Identifier'])
 
 #Future Job Function
 grouped_function = df.groupby(['Future Job Function', 
-                             'Class_Name (SIS)', 
+                             'combined_name', 
                              'Course_Identifier']).size().reset_index(name='count')
-top_function_electives = grouped_function.sort_values('count', ascending=False).drop_duplicates(subset=['Future Job Function', 'Class_Name (SIS)', 'Course_Identifier'])
+top_function_electives = grouped_function.sort_values('count', ascending=False).drop_duplicates(subset=['Future Job Function', 'combined_name', 'Course_Identifier'])
 
 
 
@@ -83,7 +83,7 @@ vars = {
     "top_function_electives":top_function_electives
 }
 
-#write_vars_to_excel("data io/Course Data descriptives.xlsx", vars)
+write_vars_to_excel("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/Student Cluster Analysis and LDA spyder/data io/Course Data descriptives.xlsx", vars)
 
 
 # -*- coding: utf-8 -*-
@@ -103,8 +103,8 @@ import datetime as datetime
 from utils import *
 
 
-df = pd.read_csv('data io/Course Data Merged.csv')
-
+df = pd.read_excel("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/raw data/Project - Student Course Clustering/Student Course Elective Enrollments Graduates 2016-2025.xlsx")
+df['year'] = df["Unique_Course_ID"].str[0:4]
 #popular professors-- need to merge with 'final_course_evals_one_row_per_prof_per_course_per_term'
 
 prof_course = pd.read_csv("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/Student Cluster Analysis and LDA spyder/data io/final_course_evals_one_row_per_prof_per_course_per_term.csv")
@@ -122,26 +122,28 @@ coursedf_profdf = df.merge(prof_course_filtd, how="left",
                            right_on = "new_unique_course_id", 
                            suffixes=("_course", "_prof"))
 
-#coursedf_profdf.to_csv("Course_Profs merged.csv")
+coursedf_profdf.to_csv("Course_Profs merged.csv")
+
 
 #popular professors
 prof_table = coursedf_profdf['fixed_name'].value_counts()
 
 
 #pop profs by term identifier
-counts = coursedf_profdf.groupby(["Term_Identifier", "fixed_name"]).size().reset_index(name="count")
+coursedf_profdf["Term_Identifier"] = coursedf_profdf["Unique_Course_ID"].str[4]
+counts = coursedf_profdf.groupby(["year","Term_Identifier", "fixed_name"]).size().reset_index(name="count")
 
 # Sort within each Term_Identifier by count descending
-prof_term = counts.sort_values(by=["Term_Identifier", "count"], ascending=[True, False])
+prof_term = counts.sort_values(by=["year","Term_Identifier", "count"], ascending=[False, True, False])
 
 '''
 Each Prof popularity over time
 '''
 # Count how many times each prof appears in each term
-counts = coursedf_profdf.groupby(["fixed_name", "Term_Identifier"]).size().reset_index(name="count")
+counts = coursedf_profdf.groupby(["fixed_name", "Term_Identifier", "year"]).size().reset_index(name="count")
 
 # Pivot to have terms as columns, profs as rows
-pivot = counts.pivot(index="fixed_name", columns="Term_Identifier", values="count")
+pivot = counts.pivot(index=["year", "fixed_name"], columns= ["Term_Identifier"], values="count")
 
 # Fill NaNs with 0 convert to int
 pivot = pivot.fillna(0).astype(int)
@@ -157,7 +159,7 @@ pivot = pivot.sort_values("total", ascending=False)
 prof_pop_vars = {"Popular profs": prof_table, 
                  "Popular profs by term":prof_term,
                  "Prof popularity over time": pivot}
-#write_vars_to_excel("data io/Prof Popularity.xlsx", prof_pop_vars)
+write_vars_to_excel("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/Student Cluster Analysis and LDA spyder/data io/Prof Popularity.xlsx", prof_pop_vars)
 
 
 
