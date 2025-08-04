@@ -45,7 +45,7 @@ selected_cols2 = ['uni', 'Grad_Year']
 wide_df = wide_df[wide_df.columns.intersection(selected_cols2)].drop_duplicates() 
 wide_df = wide_df.merge(binary_matrix, how = 'left',on= 'uni')
 
-wide_df.to_csv("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/Student Cluster Analysis and LDA spyder/data io/one row per student.csv")
+wide_df.to_csv("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/Student Cluster Analysis and LDA spyder/data io/course binary matrix.csv")
 table = wide_df['uni'].value_counts() #one row per uni!
 
 
@@ -61,7 +61,6 @@ jobs_merged = df_jf.merge(df_ji, how = "left", on="uni")
 
 
 df_job_matrix = wide_df.merge(jobs_merged, how="left", on="uni")
-df_job_matrix.to_csv("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/Student Cluster Analysis and LDA spyder/data io/IV DV jobs matrix one row per student.csv")
 
 '''
 Adding a col with all course names 
@@ -83,4 +82,14 @@ wide_df['courses_taken'] = binary_matrix[course_cols].apply(
 
 wide_df['courses_taken_str'] = wide_df['courses_taken'].apply(lambda x: ', '.join(x))
 
-wide_df.to_csv("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/Student Cluster Analysis and LDA spyder/data io/IV DV binary one row per student.csv")
+wide_df.to_csv("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/Student Cluster Analysis and LDA spyder/data io/course-course_list binary matrix.csv")
+
+
+df_job_matrix['courses_taken'] = binary_matrix[course_cols].apply(
+    lambda row: [course for course in course_cols if row[course] == 1], axis=1
+) 
+df_job_matrix['courses_taken_str'] = df_job_matrix['courses_taken'].apply(lambda x: ', '.join(x))
+
+df_job_matrix.to_csv("C:/Users/dnd2129/Documents/CBS-Github-DND/Student Cluster Analysis and LDA-20250714T173604Z-1-001/Student Cluster Analysis and LDA/Student Cluster Analysis and LDA spyder/data io/course-job-course_list binary matrix.csv")
+
+
